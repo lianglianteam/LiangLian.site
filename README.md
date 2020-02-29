@@ -1,8 +1,10 @@
-# [LiangLian.site](http://www.lianglian.site)
-*目前网站关闭*
+# LiangLian.site
+
+目前网站已关闭 *R.I.P*
+
 良链，**一个自由的资源链接分享社区** 
 
-*A Flask Project*
+**A Flask Project**
 
 含有发帖、投票、评论、个人账户、后台管理、搜索等系统
 
