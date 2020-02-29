@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}消息{% endblock %}
+{% block nav_explore %}active{% endblock %}
+{% block container %}
+            <h1>消息</h1>
+            <hr class="my-4">
+            <a class="btn btn-outline-danger mb-3" href="{{ url_for('motion_del_user_msg', id=user.id) }}">清空</a>
+            {% for msg in msgs.items %}
+            <div class="card mb-2">
+                <div class="card-body">
+                    <p class="card-text">{{ msg.content|safe }}</p>
+                </div>
+            </div>
+            {% endfor %}
+            <ul class="pagination list-unstyled">
+                {% if msgs.has_prev %}<li class="page-item mr-auto"><a class="page-link" href="{{ url_for('msg', page=msgs.prev_num) }}">&larr;上一页</a></li>{% endif %}
+                {% if msgs.has_next %}<li class="page-item ml-auto"><a class="page-link" href="{{ url_for('msg', page=msgs.next_num) }}">&rarr;下一页</a></li>{% endif %}
+            </ul>
+{%  endblock %}

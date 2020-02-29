@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}注册{% endblock %}
+{% block container %}
+        <div class="card mb-3">
+            <div class="card-body">
+            <h2 class="card-title">注册</h2>
+            <p class="card-text">加入我们，提炼与分享</p>
+            <form method="post">
+                <div class="form-group">
+                <label for="email">电子邮箱</label>
+                <input type="email" class="form-control" id="email" name="email" aria-describedby="email" placeholder="user@example.com" {% if email %}value="{{email}}"{% endif %} required>
+                <small id="emailHelp" class="form-text text-muted">您稍后可能需要验证此邮箱</small>
+                </div>
+                <div class="form-group">
+                <label for="username">用户名</label>
+                <input type="username" class="form-control" id="username" name="username" aria-describedby="username" placeholder="昵称" {% if username %}value="{{username}}"{% endif %} required>
+                </div>
+                <div class="form-group">
+                <label for="password1">密码</label>
+                <input type="password" class="form-control mb-3" name="password1" id="password1" placeholder="密码" {% if pw1 %}value="{{pw1}}"{% endif %} required aria-describedby="password">
+                <input type="password" class="form-control" name="password2" id="password2" placeholder="确认密码" {% if pw2 %}value="{{pw2}}"{% endif %} required aria-describedby="password confirm">
+                <small id="pwHelp" class="form-text text-muted">我们将用散列值保护您的密码</small>
+                </div>
+                <div class="form-group">
+                    <label for="desc">个人介绍</label>
+                    <input type="text" class="form-control mb-3" id="desc" name="desc" placeholder="可留空" {% if desc %}value="{{ desc }}" {% endif %}>
+                </div>
+                <button type="submit" class="btn btn-primary mb-3" aria-describedby="submit">注册</button>
+            </form>
+            <p class="card-text"><small class="text-muted">良链 LiangLian.site</small></p>
+            </div>
+        </div>
+{%  endblock %}

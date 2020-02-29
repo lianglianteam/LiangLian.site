@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}探索{% endblock %}
+{% block nav_explore %}my-active{% endblock %}
+{% block keywords %}探索,资源,发现{% endblock %}
+{% block description %}探索链接{% endblock %}
+{% block container %}
+            <h1>探索</h1>
+            <hr class="my-4">
+            <div>
+                <ul class="nav nav-pills mb-3" role="tablist">
+                    <li class="nav-item">
+                      <a class="nav-link {% if request.args.get('t') == APP_CONFIG['ORDER_BY_TIME']|string or not request.args.get('t') %}active{% endif %}" href="{{ url_for('explore', t=APP_CONFIG['ORDER_BY_TIME']) }}" target="_self">最近</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link {% if request.args.get('t') == APP_CONFIG['ORDER_BY_VOTE']|string %}active{% endif %}" href="{{ url_for('explore', t=APP_CONFIG['ORDER_BY_VOTE']) }}" target="_self">热度</a>
+                    </li>
+                    <!--<li class="nav-item">
+                      <a class="nav-link {% if request.args.get('t') == APP_CONFIG['ORDER_BY_Q']|string %}active{% endif %}" href="{{ url_for('explore', t=APP_CONFIG['ORDER_BY_Q']) }}" target="_self">求助</a>
+                    </li>-->
+                </ul>
+            <div class="m-3">
+                <span class="mr-2">标签</span>
+                <span>
+                    {% for tag in tags_list %}
+                    {% include '_tags_small.html' %}
+                    {% endfor %}
+                    <a class="badge badge-warning tag-item" href="{{ url_for('tags') }}">更多标签 ⎋</a>
+                </span>
+            </div>
+            <div class="card-columns">
+                {% for question in questions.items %}
+                {% include '_question_list_small.html' %}
+                {% endfor %}
+            </div>
+            <ul class="pagination list-unstyled">
+                {% if questions.has_prev %}<li class="page-item mr-auto"><a class="page-link" href="{{ url_for('explore', page=questions.prev_num) }}">&larr;上一页</a></li>{% endif %}
+                {% if questions.has_next %}<li class="page-item ml-auto"><a class="page-link" href="{{ url_for('explore', page=questions.next_num) }}">&rarr;下一页</a></li>{% endif %}
+            </ul>
+{%  endblock %}

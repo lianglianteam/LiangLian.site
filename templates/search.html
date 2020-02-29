@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block title %}搜索：{{ word }}{% endblock %}
+{% block search_word %}{{ word }}{% endblock %}
+{% block container %}
+            <h1 id="title">搜索<small>:{{ word }}</small></h1>
+            {% if answers.total != 0 %}
+                <hr class="my-4">
+                <h3 class="mb-3" id="link">链接</h3>
+            {% endif %}
+            {% for answer in answers.items %}
+            {% include '_answers_small.html' %}
+            {% endfor %}
+            <ul class="pagination list-unstyled">
+                {% if answers.has_prev %}<li class="page-item mr-auto"><a class="page-link" href="{{ url_for('search', page=answers.prev_num, id=question.id, word=word) }}">&larr;上一页</a></li>{% endif %}
+                {% if answers.has_next %}<li class="page-item ml-auto"><a class="page-link" href="{{ url_for('search', page=answers.next_num, id=question.id, word=word) }}">&rarr;下一页</a></li>{% endif %}
+            </ul>
+            {% if questions.total != 0 %}
+                <hr class="my-4">
+                <h3 class="mb-3" id="theme">主题</h3>
+            {% endif %}
+            <div class="card-columns">
+                {% for question in questions.items %}
+                {% include '_question_list.html' %}
+                {% endfor %}
+            </div>
+            <ul class="pagination list-unstyled">
+                {% if questions.has_prev %}<li class="page-item mr-auto"><a class="page-link" href="{{ url_for('search', page_questions=questions.prev_num, word=word) }}">&larr;上一页</a></li>{% endif %}
+                {% if questions.has_next %}<li class="page-item ml-auto"><a class="page-link" href="{{ url_for('search', page_questions=questions.next_num, word=word) }}">&rarr;下一页</a></li>{% endif %}
+            </ul>
+            {% if authors.total != 0 %}
+                <hr class="my-4">
+                <h3 class="mb-3" id="user">用户</h3>
+            {% endif %}
+            <div class="card-columns">
+                {% for user_ in authors.items %}
+                <div class="card link-item-small">
+                    <div class="card-body">
+                        <h5 class="card-title"><a href="{{ url_for('view_user', id=user_.id) }}">{{ user_.username }}</a></h5>
+                        <p class="card-text">{{ user_.desc }}</p>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            <ul class="pagination list-unstyled">
+                {% if authors.has_prev %}<li class="page-item mr-auto"><a class="page-link" href="{{ url_for('search', page_authors=authors.prev_num, word=word) }}">&larr;上一页</a></li>{% endif %}
+                {% if authors.has_next %}<li class="page-item ml-auto"><a class="page-link" href="{{ url_for('search', page_authors=authors.next_num, word=word) }}">&rarr;下一页</a></li>{% endif %}
+            </ul>
+            <div class="alert alert-info mt-3" role="alert">
+                还是没有找到？试试：
+                <ul>
+                    <li>调整关键字，多个关键字用空格隔开</li>
+                    <li>去哪里找资源？看看<a href="{{ url_for('guide') }}">互联网生存指南</a>的推荐</li>
+                    <li>或者去<a href="https://www.baidu.com/s?wd={{ word }}" target="_blank">百度</a>转转</li>
+                </ul>
+            </div>
+{%  endblock %}

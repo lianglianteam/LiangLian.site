@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block title %}提问{% endblock %}
+{% block head %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/tagsinput.css') }}">
+{% endblock %}
+{% block container %}
+        <div class="card mb-3">
+                <div class="card-body">
+                <h2 class="card-title">提问</h2>
+                <p class="card-text">向链友求助</p>
+                <form method="post">
+                    <div class="form-group">
+                    <label for="title">标题</label>
+                    <input type="text" class="form-control" id="title" name="title" aria-describedby="title" placeholder="简短有力的标题" {% if title %}value="{{title}}"{% endif %} required>
+                    <small id="titleHelp" class="form-text text-muted">请确认是否已存在相关问题</small>
+                    </div>
+                    <div class="form-group">
+                    <label for="desc">简述</label>
+                        <textarea type="text" class="form-control" id="desc" name="desc" placeholder="对问题的简短描述" {% if desc %}value="{{desc}}"{% endif %} required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="tags">标签</label>
+                        <input type="text" class="form-control" id="tags" name="tags" data-role="tagsinput">
+                        <small id="tagsHelp" class="form-text text-muted">回车或,添加标签</small>
+                    </div>
+                    <button type="submit" class="btn btn-primary mb-3" aria-describedby="submit">提交</button>
+                </form>
+                <p class="card-text"><small class="text-muted">良链 LiangLian.site</small></p>
+                </div>
+        </div>
+{%  endblock %}
+{% block js %}
+    <script src="{{ url_for('static', filename='js/tagsinput.js') }}"></script>
+{% endblock %}

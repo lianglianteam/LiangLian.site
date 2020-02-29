@@ -1,0 +1,27 @@
+<script>
+    function follow_tag(id) {
+        $.ajax({
+            url: "{{ url_for('motion_follow_tag') }}",
+            type: "post",
+            data: {id: id},
+            success: function(response) {
+                var btn = $('#tag-'+id+'-btn');
+                if(response['state'] === 'LOGIN_REQUIRED'){
+                    jump_to_login()
+                }
+                else if(response['now'] === 'follow'){
+                    btn.removeClass('btn-outline-success');
+                    btn.addClass('btn-outline-warning');
+                    btn.text('取消关注 | '+response['cnt']);
+                }else{
+                    btn.removeClass('btn-outline-warning');
+                    btn.addClass('btn-outline-success');
+                    btn.text('关注 | '+response['cnt'])
+                }
+            },
+            error: function(xhr) {
+                alert('fail');
+            }
+        });
+    }
+</script>

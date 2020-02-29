@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="zh">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.2.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+
+    <meta name="keywords" itemprop="keywords" content="良链,{% block keywords %}{% endblock %}">
+    <meta name="description" itemprop="description" content="{% block description %}{% endblock %}" >
+
+    {% block head %}
+    {% endblock %}
+
+    <title>良链 - {% block title %}{% endblock %}</title>
+  </head>
+  <body class="my-when-nav-fixed-top" onhashchange="fix_the_nav();">
+      <nav class="navbar my-nav fixed-top navbar-expand-lg navbar-light pl-5 pr-5 mb-3">
+          <a class="navbar-brand" href="{{ url_for('index') }}" id="brand-lianglian">良链</a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link {% block nav_index %}{% endblock %}" href="{{ url_for('index') }}">首页<span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% block nav_explore %}{% endblock %}" href="{{ url_for('explore') }}">探索</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% block nav_guide %}{% endblock %}" href="{{ url_for('guide') }}">精选</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% block nav_about %}{% endblock %}" href="{{ url_for('about') }}">关于</a>
+                </li>
+            <form class="navbar-form mr-auto navbar-search" method="get" action="{{ url_for('search') }}">
+              <div class="input-group">
+                  <input type="text" class="form-control" placeholder="搜索一下" id="word" name="word" title="多关键字用空格隔开" value="{% block search_word %}{% endblock %}">
+                  <span class="input-group-append">
+                    <button class="btn btn-outline-success" type="submit" aria-describedby="submit">Go</button>
+                  </span>
+              </div>
+            </form>
+            </ul>
+            <div class="my-nav-item-user">
+            {% if user %}
+                <div class="ml-auto form-inline navbar-user">
+                            <div class="dropdown">
+                                    <button type="button" class="btn btn-outline-primary {% if user.msg_unread %}new-msg{% endif %}" data-toggle="dropdown">
+                                    {{ user.username }}
+                                    </button>
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item" href="{{ url_for('view_user', id=user.id) }}">个人主页</a>
+                                    <a class="dropdown-item {% if user.msg_unread %}new-msg{% endif %}" href="{{ url_for('msg') }}">消息</a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" href="{{ url_for('edit_user_desc', id=user.id) }}">修改个人介绍</a>
+                                    <a class="dropdown-item" href="{{ url_for('edit_pw') }}">更改密码</a>
+                                    {% if not user.confirmed %}
+                                        <a class="dropdown-item new-msg" href="{{ url_for('view_confirm') }}">激活账户</a>
+                                    {% endif %}
+                                    <a class="dropdown-item" href="{{ url_for('logout') }}">注销账户</a>
+                                </div>
+                          </div>
+                  </div>
+              {% else %}
+                <a class="mr-1" href="{{ url_for('login') }}">登录</a>
+                <a href="{{ url_for('register') }}">注册</a>
+              {% endif %}
+            </div>
+            <div class="my-nav-item-action">
+              <a class="btn btn-outline-primary" href="{{ url_for('write_answer') }}" role="button">分享</a>
+              <a class="btn btn-outline-success ml-1" href="{{ url_for('write_question') }}" role="button">提问</a>
+            </div>
+          </div>
+      </nav>
+      
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-warning my-when-nav-fixed-top">
+        <button type="button" class="close" data-dismiss="alert"> &times;</button>
+        {{ message | safe}}
+        </div>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
+
+      <div class="container">
+          {% block container %}
+          {% endblock %}
+      </div><!-- /.container -->
+
+    <footer class="container-fluid mt-1">
+        <hr class="my-4">
+        <div class="footer text-muted">
+            <div><span>Copyright © 2019 <b>良链</b> LiangLian.site</span></div>
+            <div><small>Powered by Python Flask</small></div>
+            <div><a href="{{ url_for('about', _anchor="call") }}"><small>联系我们</small></a></div>
+        </div>
+    </footer>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/popper.js/1.12.5/umd/popper.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/4.2.1/js/bootstrap.min.js"></script>
+    {% block js %}
+    {% endblock %}
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <!-- Template JavaScript -->
+    {% if anchor %}
+    <script>
+        $(document).ready(function(){
+            window.location.hash = "#{{ anchor }}";
+        });
+    </script>
+    {% endif %}
+  </body>
+</html>

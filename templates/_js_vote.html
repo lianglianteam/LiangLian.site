@@ -1,0 +1,28 @@
+<script>
+    // load posts under #post-box
+    function vote(id, type) {
+        var btn_up = $('#btn-vote-answer-'+id.toString());
+        var btn_down = $('#btn-vote-answer-'+id.toString()+'-down');
+        $.ajax({
+            url: "{{ url_for('motion_vote') }}",
+            type: "post",
+            data: {id: id, type:type},
+            success: function(response) {
+                if (response['state'] === 'success'){
+                    if(type === 'up'){
+                        btn_up.attr('data-original-title', '已赞');
+                    }else{
+                        btn_down.attr('data-original-title', '已踩');
+                    }
+                    btn_up.text('♥︎ '+response['vote']);
+                }else if(response['state'] === 'LOGIN_REQUIRED'){
+                    jump_to_login();
+                }
+                btn_up.onclick = function(){}
+            },
+            error: function(xhr) {
+                alert('fail');
+            }
+        });
+    }
+</script>

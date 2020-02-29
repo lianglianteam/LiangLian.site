@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}找回密码{% endblock %}
+{% block container %}
+    <h1>找回密码</h1>
+    <hr class="my-4">
+    <p>
+        忘记密码了？我们将给您的邮箱发送一封邮件以重置您的密码，请您在一小时内查收 : )<br>
+        若在邮箱中没有看到相关邮件，<b>请直接搜索邮件，关键字：良链</b>
+    </p>
+    <small style="float: right">来自 良链团队ʕ•̫͡•ʕ*̫͡*ʕ•͓͡•ʔ-̫͡-ʕ•̫͡•ʔ*̫͡*ʔ-̫͡-ʔ</small>
+    <hr class="my-4">
+    <form class="input-group" method="post">
+        <input type="email" class="form-control" name="email" placeholder="注册的邮箱地址" required>
+        <div class="input-group-append">
+            <button type="submit" class="btn btn-outline-secondary" aria-describedby="submit">发送邮件</button>
+        </div>
+    </form>
+    <small class="text-muted">注意，发送邮件冷却时间60s</small>
+{%  endblock %}

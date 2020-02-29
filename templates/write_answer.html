@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block title %}分享{% endblock %}
+{% block head %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/tagsinput.css') }}">
+{% endblock %}
+{% block container %}
+        <div class="card mb-3">
+                <div class="card-body">
+                <h2 class="card-title">分享</h2>
+                <p class="card-text">{% if disable %}正在回应：{{ question }} {% else %}{% endif %}</p>
+                <form method="post">
+                    {% if disable %}
+                    {% else %}
+                    <hr class="my-4">
+                    <p>首先给自己创建一个主题以供分享</p>
+                    <div class="form-group">
+                    <label for="question">标题</label>
+                    <input type="text" class="form-control" id="question" name="question" aria-describedby="question" placeholder="简短有力的标题" {% if question %}value="{{question}}"{% endif %} {% if disable %}readonly="readonly"{% endif %} required>
+                    <small id="questionHelp" class="form-text text-muted">请确认是否已存在相关主题，以免重复添加</small>
+                    </div>
+                    <div class="form-group">
+                    <label for="desc_question">简述</label>
+                        <textarea type="text" class="form-control" id="question_desc" name="question_desc" aria-describedby="desc-question" placeholder="可留空" {% if desc_question %}value="{{desc_question}}"{% endif %} {% if disable %}readonly="readonly"{% endif %}></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="tags">标签</label>
+                        <input type="text" class="form-control" id="tags" name="tags" data-role="tagsinput">
+                        <small id="tagsHelp" class="form-text text-muted">回车或英文逗号,添加标签 <a href="{{ url_for('tags') }}" target="_blank">有哪些标签？</a></small>
+                    </div>
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" id="private" name="private" aria-describedby="private">
+                        <label class="form-check-label" for="private">私有主题</label>
+                        <small id="checkboxHelp" class="form-text text-muted">只有您才能管理私有主题，其他用户将无法向私有主题添加链接，不推荐勾选</small>
+                    </div>
+                    <hr class="my-4">
+                    {% endif %}
+                    <div class="form-group">
+                    <label for="link">链接</label>
+                    <input type="url" class="form-control" id="link" name="link" placeholder="https://www.example.com" {% if link %}value="{{link}}"{% endif %} required>
+                    </div>
+                    <div class="form-group">
+                    <label for="desc">链接简介</label>
+                        <textarea type="text" class="form-control" id="desc" name="desc" placeholder="网站名称 - 内容描述 &#10备注（如有效期、访问密码等）" {% if desc %}value="{{desc}}"{% endif %} required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary mb-3" aria-describedby="submit">分享</button>
+                </form>
+                <p class="card-text"><small class="text-muted">良链 LiangLian.site</small></p>
+                </div>
+            </div>
+{%  endblock %}
+{% block js %}
+    <script src="{{ url_for('static', filename='js/tagsinput.js') }}"></script>
+{% endblock %}

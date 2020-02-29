@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %}标签:{{ tag.name }}{% endblock %}
+{% block keywords %}标签,tag,tags,{{ tag.name }}{% endblock %}
+{% block description %}标签{{ tag.name }}{% endblock %}
+{% block container %}
+            <span>
+                <h3 style="display: inline-block">{{ tag.name }}</h3>
+                {% if user %}
+                        {% if user.hav_tag(tag.name) %}
+                            <button onclick="follow_tag('{{ tag.id }}')" class="btn btn-outline-warning btn-sm m-2" id="tag-{{ tag.id }}-btn">取消关注 | {{ tag.users.count() }}</button>
+                        {% else %}
+                            <button onclick="follow_tag('{{ tag.id }}')" class="btn btn-outline-success btn-sm m-2" id="tag-{{ tag.id }}-btn">关注 | {{ tag.users.count() }}</button>
+                        {% endif %}
+                        {% if user.role.type == USER_CODE['root'] or user.role.type == USER_CODE['admin'] %}
+                            <a href="{{ url_for('motion_del_tag', id=tag.id) }}" class="btn btn-danger btn-sm m-2">删除标签</a>
+                        {% endif %}
+                {% else %}
+                            <button onclick="follow_tag('{{ tag.id }}')" class="btn btn-outline-success btn-sm m-2" id="tag-{{ tag.id }}-btn">关注 | {{ tag.users.count() }}</button>
+                {% endif %}
+            </span>
+            <p>共{{ tag.questions.count() }}个链接在其名下<br>创建于{{ moment(tag.create_time).calendar() }}</p>
+            <hr class="my-4">
+            <div class="card-columns">
+                {% for question in questions.items %}
+                {% include '_question_list.html' %}
+                {% endfor %}
+            </div>
+            <ul class="pagination list-unstyled">
+                {% if questions.has_prev %}<li class="page-item mr-auto"><a class="page-link" href="{{ url_for('view_tag', id=tag.id, page=questions.prev_num) }}">&larr;上一页</a></li>{% endif %}
+                {% if questions.has_next %}<li class="page-item ml-auto"><a class="page-link" href="{{ url_for('view_tag', id=tag.id, page=questions.next_num) }}">&rarr;下一页</a></li>{% endif %}
+            </ul>
+{%  endblock %}
+{% block js %}
+    {% include '_js_tag.html' %}
+    {{ moment.include_moment(local_js='https://cdn.staticfile.org/moment.js/2.24.0/moment-with-locales.min.js') }}
+    {{ moment.lang("zh-CN") }}
+{% endblock %}

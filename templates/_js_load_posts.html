@@ -1,0 +1,31 @@
+<script>
+    // load posts under #post-box
+    function load_posts(page, type, per_page, post_box, me) {
+        var box = $(post_box);
+        var spinner = document.createElement('span');
+        spinner.className = "spinner-border spinner-border-sm mr-2";
+        spinner.setAttribute("role", "status");
+        spinner.id = 'spinner-'+type;
+        me.appendChild(spinner);
+        $.ajax({
+            url: "{{ url_for('motion_load_posts') }}",
+            type: "post",
+            data: {page: page, type:type, per_page:per_page},
+            success: function(response) {
+                box.append(response['posts']);
+                if (response['has_nxt'] === true){
+                    me.innerText = '加载更多';
+                }else{
+                    me.innerText = '没有啦: )';
+                    me.disabled = true
+                }
+                me.onclick = function(){load_posts(page+1, type, per_page, post_box, me)}
+                spinner.remove()
+            },
+            error: function(xhr) {
+                me.innerText = '加载失败😢';
+                spinner.remove()
+            }
+        });
+    }
+</script>

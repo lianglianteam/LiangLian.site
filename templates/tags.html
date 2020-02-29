@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block title %}标签们{% endblock %}
+{% block keywords %}标签,tag,tags{% endblock %}
+{% block description %}标签Tags{% endblock %}
+{% block container %}
+            <h1>标签们</h1>
+            <hr class="my-4">
+            <p class="mb-3 text-muted">发现同类，找到组织</p>
+            <div class="card-columns">
+                {% for tag in tags.items %}
+                <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <a href="{{ url_for('view_tag', id=tag.id) }}">{{ tag.name }}</a>
+                        {% if user %}
+                        {% if user.hav_tag(tag.name) %}
+                            <button onclick="follow_tag('{{ tag.id }}')" class="btn btn-outline-warning btn-sm m-2" id="tag-{{ tag.id }}-btn">取消关注 | {{ tag.users.count() }}</button>
+                        {% else %}
+                            <button onclick="follow_tag('{{ tag.id }}')" class="btn btn-outline-success btn-sm m-2" id="tag-{{ tag.id }}-btn">关注 | {{ tag.users.count() }}</button>
+                        {% endif %}
+                        {% else %}
+                            <button onclick="follow_tag('{{ tag.id }}')" class="btn btn-outline-success btn-sm m-2" id="tag-{{ tag.id }}-btn">关注 | {{ tag.users.count() }}</button>
+                        {% endif %}
+                    </h5>
+                    <div>
+                    <small class="card-subtitle text-muted">{{ tag.questions.count() }}个链接</small>
+                    {% if user %}
+                        {% if user.role.type == USER_CODE['root'] or user.role.type == USER_CODE['admin'] %}
+                            <a href="{{ url_for('motion_del_tag', id=tag.id) }}" class="float-right">删除标签</a>
+                        {% endif %}
+                    {% endif %}
+                    </div>
+                </div>
+                </div>
+                {% endfor %}
+            </div>
+            <ul class="pagination list-unstyled">
+                {% if tags.has_prev %}<li class="page-item mr-auto"><a class="page-link" href="{{ url_for('tags', page=tags.prev_num) }}">&larr;上一页</a></li>{% endif %}
+                {% if tags.has_next %}<li class="page-item ml-auto"><a class="page-link" href="{{ url_for('tags', page=tags.next_num) }}">&rarr;下一页</a></li>{% endif %}
+            </ul>
+{%  endblock %}
+{% block js %}
+    {% include '_js_tag.html' %}
+{% endblock %}

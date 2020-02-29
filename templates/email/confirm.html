@@ -1,0 +1,10 @@
+{% extends 'email/base_email.html' %}
+{% block body %}
+        <h2>验证您的邮箱</h2>
+        <hr style="margin-top: 1rem;margin-bottom: 1rem;">
+		<p>
+            <b>{{ user.username }}</b>，您好<br><br>
+			请在 1 小时内，访问下面的链接以验证邮箱
+		</p>
+		<a href="{{ url_for('confirm', token=token, _external=True) }}" target="_blank" rel="noopener norefferrer">{{ url_for('confirm', token=token, _external=True) }}</a>
+{% endblock %}

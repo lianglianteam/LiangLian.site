@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}激活账户{% endblock %}
+{% block container %}
+    <h1>激活您的账户</h1>
+    <hr class="my-4">
+    <p>
+        为了保护社区，防止恶意行为，我们将给您（{{ user.email }}）发送一封邮件以激活您的账户，请您在一小时内查收 : )
+    </p>
+    <p>
+        若在邮箱中没有看到相关邮件，<b>请直接搜索邮件，关键字：良链</b><br><small class="pt-3">来自 良链团队ʕ•̫͡•ʕ*̫͡*ʕ•͓͡•ʔ-̫͡-ʕ•̫͡•ʔ*̫͡*ʔ-̫͡-ʔ</small>
+    </p>
+    <a href="{{ url_for('send_confirm') }}" class="card-link btn btn-outline-success">发送邮件</a>
+    <small class="text-muted pl-3">注意，发送邮件冷却时间60s</small>
+{%  endblock %}

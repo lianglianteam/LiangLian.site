@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+{% block title %}用户 {{ user_.username }}{% endblock %}
+{% block keywords %}用户{% endblock %}
+{% block description %}良链用户{{ user_.username }}{% endblock %}
+{% block container %}
+    <div class="card m-2">
+        <div class="card-body">
+            <div style="display: table-cell; vertical-align: -webkit-baseline-middle;">
+            <div class="media-body">
+                <img src="{{ user_.gravatar(size=200) }}" style="border-radius: 50%;">
+            </div>
+            <div class="media-body">
+                <h3 class="media-heading author" id="title">
+                {{ user_.username }}
+                </h3>
+                <div class="item">
+                    <span>第 <b>{{ user_.id }}</b> 位会员</span>
+                    {% if user_.role.type == USER_CODE['root'] %} <span class="badge badge-danger ml-2">root</span>{% endif %}
+                    {% if user_.role.type == USER_CODE['admin'] %} <span class="badge badge-danger ml-2">admin</span>{% endif %}
+                    {% if user_.role.type == USER_CODE['bad_guy'] %} <span class="badge badge-dark ml-2">封禁</span>{% endif %}
+                </div>
+                {% if user %}
+                {% if user.role.type == USER_CODE['root'] or user.role.type == USER_CODE['admin'] %}
+                <div class="item">
+                    {{ user_.email }}
+                </div>
+                <div class="item">
+                    {% if user_.role.type == USER_CODE['bad_guy'] %}
+                    <a class="btn btn-danger m-1 btn-sm" href="{{ url_for('motion_edit_user_role', id=user_.id, role=USER_CODE['email_not_pass']) }}">解封账号</a>
+                    {% else %}
+                        {% if user_.role.type != USER_CODE['root'] and user.id != user_.id %}
+                        <a class="btn btn-danger m-1 btn-sm" href="{{ url_for('motion_edit_user_role', id=user_.id, role=USER_CODE['bad_guy']) }}">查封账号</a>
+                        {% endif %}
+                    {% endif %}
+                    {% if not user_.confirmed %}
+                        <a class="btn btn-danger m-1 btn-sm" href="{{ url_for('motion_edit_user_role', id=user_.id, role=USER_CODE['common']) }}">激活账户</a>
+                    {% endif %}
+                    {% if user.role.type == USER_CODE['root'] and user_.role.type != USER_CODE['root']%}
+                        {% if user_.role.type != USER_CODE['admin']%}
+                            <a class="btn btn-danger m-1 btn-sm" href="{{ url_for('motion_edit_user_role', id=user_.id, role=USER_CODE['admin']) }}">设为管理员</a>
+                        {% else %}
+                            <a class="btn btn-danger m-1 btn-sm" href="{{ url_for('motion_edit_user_role', id=user_.id, role=USER_CODE['common']) }}">撤回管理员</a>
+                        {% endif %}
+                    {% endif %}
+                </div>
+                {% endif %}
+                {% endif %}
+                <div class="item number">
+                    <span class="description-text">注册于</span> <span title="{{ user_.create_time }}">{{ moment(user_.create_time).fromNow() }}</span>
+                </div>
+
+                <div class="item number">
+                    <span class="description-text">活跃于</span> <span title="{{ user_.last_active_time }}">{{ moment(user_.last_active_time).fromNow() }}</span>
+                </div>
+
+                <div class="input-group mt-3 mb-3">
+                    <div class="input-group-prepend">
+                    <span class="input-group-text" id="basic-addon1">贡献</span>
+                    </div>
+                    <input type="text" class="form-control" value="{{ point }}" aria-label="Username" aria-describedby="basic-addon1" readonly style="width:5rem;">
+                </div>
+            </div>
+            </div>
+            <div>
+                <blockquote class="blockquote user-sign">
+                <small class="mb-0" style="color: gray;">{{ user_.desc }}{% if user and user == user_ %}<a href="{{ url_for('edit_user_desc', id=user_.id) }}">[编辑]</a>{% endif %}</small>
+                </blockquote>
+            </div>
+        </div>
+    </div>
+    {% if tags_list|length != 0 %}
+        <hr class="my-4">
+        <h3 class="mb-3" id="link">TA关注的标签</h3>
+        <div>
+        {% for tag in tags_list %}
+        {% include '_tags_small.html' %}
+        {% endfor %}
+        </div>
+    {% endif %}
+    {% if answers.total != 0 %}
+        <hr class="my-4">
+        <h3 class="mb-3" id="link">TA的链接</h3>
+    {% endif %}
+    {% for answer in answers.items %}
+    {% include '_answers_small.html' %}
+    {% endfor %}
+    <ul class="pagination list-unstyled">
+        {% if answers.has_prev %}<li class="page-item mr-auto"><a class="page-link" href="{{ url_for('view_user', page=answers.prev_num, id=user_.id) }}">&larr;上一页</a></li>{% endif %}
+        {% if answers.has_next %}<li class="page-item ml-auto"><a class="page-link" href="{{ url_for('view_user', page=answers.next_num, id=user_.id) }}">&rarr;下一页</a></li>{% endif %}
+    </ul>
+    {% if questions.total != 0 %}
+        <hr class="my-4">
+        <h3 class="mb-3" id="theme">TA创建的主题</h3>
+    {% endif %}
+    <div class="card-columns">
+        {% for question in questions.items %}
+        {% include '_question_list.html' %}
+        {% endfor %}
+    </div>
+    <ul class="pagination list-unstyled">
+        {% if questions.has_prev %}<li class="page-item mr-auto"><a class="page-link" href="{{ url_for('view_user', page_questions=questions.prev_num, id=user_.id) }}">&larr;上一页</a></li>{% endif %}
+        {% if questions.has_next %}<li class="page-item ml-auto"><a class="page-link" href="{{ url_for('view_user', page_questions=questions.next_num, id=user_.id) }}">&rarr;下一页</a></li>{% endif %}
+    </ul>
+{%  endblock %}
+{% block js %}
+    {{ moment.include_moment(local_js='https://cdn.staticfile.org/moment.js/2.24.0/moment-with-locales.min.js') }}
+    {{ moment.lang("zh-CN") }}
+{% endblock %}

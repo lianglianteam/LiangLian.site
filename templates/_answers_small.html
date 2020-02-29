@@ -1,0 +1,8 @@
+<div class="card mb-2" id="answer-{{ answer.id }}">
+    <div class="card-body" id="answer-body-{{ answer.id }}">
+        <a class="btn btn-outline-primary btn-sm" href="{{ answer.link }}" target="_blank" data-toggle="tooltip" data-placement="top" title="外部链接具有一定安全隐患，请谨慎浏览" rel="noopener norefferrer"><span>直达</span></a>
+        <span class="card-title"><a href="{{ url_for('view_question', id=answer.question.id, _anchor="answer-"+answer.id|string)}}">{{ answer.link_title | truncate(50, True)}}</a></span>
+        <small class="mr-3 text-muted">♥︎ {{ answer.vote }}</small>
+        <p class="card-text mt-3">{{ answer.desc }}</p>
+    </div>
+</div>

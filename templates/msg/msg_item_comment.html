@@ -1,0 +1,2 @@
+🗣<a href="{{ url_for('view_user', id=sender.id, _external=True) }}">{{ sender.username }}</a>回复了您在<a href="{{ url_for('view_question', id=answer.question.id, _external=True) }}">主题{{ answer.question.title }}</a>下分享的<a href="{{ url_for('view_question', id=answer.question.id, _anchor="answer-"+answer.id|string, _external=True)}}"><span>链接:{{ answer.link_title }}</span></a><br>
+<p style="color: gray;">{{ text }}</p>

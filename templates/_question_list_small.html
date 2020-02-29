@@ -1,0 +1,7 @@
+<div class="card link-item-small">
+    <div class="sm-item">
+        <a href="{{ url_for('view_question', id=question.id) }}">{{ question.title }}</a>
+        <nobr><span><small class="mr-3 ml-3 text-muted">♥︎ {{ question.vote }}</small></span></nobr>
+        <nobr><span><small class="card-subtitle text-muted">{% if question.answers.count() == 0 %}<span class="badge badge-danger">求助ing</span>{% else %}{{ question.answers.count() }}个链接{% endif %}</small></span></nobr>
+    </div>
+</div>

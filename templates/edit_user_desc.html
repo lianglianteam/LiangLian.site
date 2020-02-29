@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block title %}修改个人介绍{% endblock %}
+{% block container %}
+    <h1>修改您的介绍</h1>
+    <hr class="my-4">
+    <form method="post">
+        <label for="desc">个人介绍</label>
+        <input type="text" class="form-control mb-3" id="desc" name="desc" placeholder="" {% if desc %}value="{{ desc }}" {% endif %} required>
+        <button type="submit" class="btn btn-primary mb-3" aria-describedby="submit">提交</button>
+    </form>
+{%  endblock %}

@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% block title %}分享：{{ question.title }}{% endblock %}
+{% block container %}
+            <div class="card">
+                <div class="card-header">
+                {{ question.answers.count() }}个链接
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">{{ question.title }}</h5>
+                    <p class="card-text">{{ question.desc }}</p>
+                    <a href="{{ url_for('write_answer', question=question.title) }}" class="btn btn-success">我来回答</a>
+                    <a href="{{ url_for('view_question', id=question.id) }}" class="btn btn-primary">其他答案</a>
+                    <a href="#" class="btn btn-warning">编辑</a>
+                    {% if user %}{% if user.role.type == USER_CODE['root'] or user.role.type == USER_CODE['admin'] or question.author.id == user.id %}<a href="{{ url_for('motion_del_question', id=question.id) }}" class="btn btn-danger">删除</a>{% endif %}{% endif %}
+                </div>
+                    <div class="card-footer text-muted">
+                        <span class="mr-auto">{{ moment(question.create_time).calendar() }}</span>
+                        <span style="float:right;">From <a class="author" href="{{ url_for('view_user', id=question.author.id) }}">{{ question.author.username }}</a></span>
+                    </div>
+            </div>
+            <div class="card text-center link-item" id="answer-{{ answer.id }}">
+                <div class="card-header text-left">
+                    <a class="btn btn-outline-success {% if user and answer.hav_vote(user) %}disabled{% endif %}" href="{{ url_for('motion_vote_up', id=answer.id) }}">赞{% if answer.vote > 0 %} ({{ answer.vote }}){% endif %}</a>
+                    <a class="btn btn-outline-warning {% if user and answer.hav_vote(user) %}disabled{% endif %}" href="{{ url_for('motion_vote_down', id=answer.id) }}">踩{% if answer.vote < 0 %} ({{ answer.vote }}){% endif %}</a>
+                    <a class="btn btn-outline-danger" href="#">报告</a>
+                    {% if user %}{% if answer.author.role.type == USER_CODE['root'] or answer.author.role.type == USER_CODE['admin'] or answer.author.id == user.id %}<a href="{{ url_for('motion_del_answer', id=answer.id) }}" class="btn btn-danger float-right">删除</a>{% endif %}{% endif %}
+                    <!--<a style="float: right;" class="mt-1" href="#">链接分享</a>-->
+                </div>
+                <div class="card-body" id="answer-body-{{ answer.id }}">
+                    <h5 class="card-title"><a href="{{ answer.link }}" target="_blank">{{ answer.link_title | truncate(50, True)}}</a></h5>
+                    <p class="card-text">{{ answer.desc }}</p>
+                    <iframe  width="100%" height="500rem" src="{{ answer.link }}" seamless frameborder="0" class="card-text"></iframe>
+                    <button class="btn btn-primary" onclick="show_preview('preview-button-{{ answer.id }}','{{ answer.link }}')" id="preview-button-{{ answer.id }}"><span>预览</span></button>
+                    <a class="btn btn-success" href="{{answer.link}}" role="button" target="_blank">打开</a>
+                    <ul class="list-unstyled">
+                        {% for comment in answer.comments %}
+                            <li class="media" id="comment-{{ comment.id }}">
+                                <div class="media-body" style="text-align:left;">
+                                    <a class="mt-0 mb-1 author" href="{{ url_for('view_user', id=comment.author.id) }}">{{ comment.author.username }}</a>：
+                                    <span>{{ comment.content }}</span>
+                                    {% if user %}{% if comment.author.role.type == USER_CODE['root'] or comment.author.role.type == USER_CODE['admin'] or comment.author.id == user.id %}<a href="{{ url_for('motion_del_comment', id=comment.id) }}" class="btn btn-danger float-right m-2">删除</a>{% endif %}{% endif %}
+                                    <small class="description-text float-right">{{ moment(comment.create_time).fromNow() }}</small>
+                                </div>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                    <form class="input-group mb-3" method="post" action="#answer-{{ answer.id }}">
+                        <input type="text" class="form-control" id="comment-input" name="comment" placeholder="这个链接怎么样？" required>
+                        <div class="input-group-append">
+                            <button type="submit" class="btn btn-outline-secondary" aria-describedby="submit">评论</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="card-footer text-muted">
+                        <span style="float:left;">{{ moment(answer.create_time).calendar() }}</span>
+                        <span style="float:right;">From <a class="author" href="{{ url_for('view_user', id=answer.author.id) }}">{{ answer.author.username }}</a></span>
+                </div>
+            </div>
+{%  endblock %}

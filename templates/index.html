@@ -1,0 +1,181 @@
+{% extends "base.html" %}
+{% block title %}在纷乱中提炼{% endblock %}
+{% block nav_index %}my-active{% endblock %}
+{% block keywords %}资源,实用网站,实用{% endblock %}
+{% block description %}良链，在纷乱中提炼。我们相信，时至今日互联网更需要的，不是再制造低质量信息，而是从纷乱错杂的数据中筛选、提炼精华的环节。{% endblock %}
+{% block container %}
+            {% if user %}
+            {% if launcher %}
+            <div class="card mb-3">
+                <div class="card-header">
+                    <span>快速启动</span>
+                    <a href="{{ url_for('view_question', id=launcher.id) }}" class="btn btn-primary btn-sm" style="float: right">编辑</a>
+                </div>
+                <div class="card-body">
+                    {% for item in launcher_list %}
+                        <a href="{{ item.link }}" target="_blank" class="btn btn-outline-success btn-sm" rel="noopener norefferrer">{{ item.desc | truncate(15, True) }}</a>
+                    {% endfor %}
+                    {% if launcher_list|length == 0 %}
+                        <span class="text-muted">还没有快速启动项？点击<a href="{{ url_for('view_question', id=launcher.id) }}">编辑</a>添加</span>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-2 col-xl-2 hidden-sm">
+                    <div class="router-box">
+                        <div class="list-group">
+                            <a href="#follow" class="list-group-item list-group-item-action">关注</a>
+                            <a href="#last" class="list-group-item list-group-item-action">最近</a>
+                            <a href="#guide" class="list-group-item list-group-item-action">精选</a>
+                        </div>
+                    </div>
+                    <div class="router-box">
+                        <div><h5 class="sub">标签</h5></div>
+                        {% for tag in tags_list %}
+                        {% include '_tags_small.html' %}
+                        {% endfor %}
+                        <a class="badge badge-warning tag-item" href="{{ url_for('tags') }}">更多标签 ⎋</a>
+                    </div>
+                </div>
+                <!-- /.block left -->
+                <div class="col-lg-10 col-xl-10">
+                    <div>
+                        <h3 class="text-muted mb-2" id="follow">关注</h3>
+                        {% if questions_follow.total == 0 %}
+                            <div class="alert alert-info" role="alert">
+                            <small>还没有关注任何标签？去<a href="{{ url_for('tags') }}">关注标签</a></small>
+                            </div>
+                        {% else %}
+                        <div id="box-follow">
+                        <div class="card-columns">
+                            {% for question in questions_follow.items %}
+                            {% include '_question_list.html' %}
+                            {% endfor %}
+                        </div>
+                        </div>
+                        <div class="mt-1 mb-3 text-center">
+                            <button class="btn btn-sm btn-outline-primary mb-1" onclick="load_posts(2, 'questions_follow', {{ APP_CONFIG['POSTS_PRE_PAGE_INDEX'] }}, '#box-follow', this)">加载更多</button>
+                        </div>
+                        {% endif %}
+                    </div>
+                    <!-- /.follow -->
+                    <div>
+                        <h3 class="text-muted mb-2" id="last">最近</h3>
+                        <div id="box-last">
+                            <div class="card-columns">
+                                {% for question in questions_last %}
+                                    {% include '_question_list.html' %}
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <div class="mt-1 mb-3 text-center">
+                            <button class="btn btn-sm btn-outline-primary mb-1" onclick="load_posts(2, 'questions_last', {{ APP_CONFIG['POSTS_PRE_PAGE_INDEX'] }}, '#box-last', this)">加载更多</button>
+                        </div>
+                    </div>
+                    <!-- /.last -->
+                    <hr>
+                    <div>
+                        <h3 class="text-muted mb-2" id="guide">精选</h3>
+                        <div id="box-guide">
+                        <div class="card-columns">
+                            {% for question in questions_guide %}
+                            {% include '_question_list.html' %}
+                            {% endfor %}
+                        </div>
+                        </div>
+
+                        <div class="mt-1 mb-3 text-center">
+                            <button class="btn btn-sm btn-outline-primary mb-1" onclick="load_posts(2, 'questions_guide', {{ APP_CONFIG['POSTS_PRE_PAGE_INDEX'] }}, '#box-guide', this)">加载更多</button>
+                        </div>
+                    </div>
+                    <!-- /.guide -->
+                </div>
+                <!-- /.block right -->
+            </div>
+            {% endif %}
+            {% else %}
+            <div class="alert alert-dismissible fade show my-small-expand" role="alert">
+                <div class="card">
+                    <div class="card-body">
+                        <h1 class="card-title">在纷乱中提炼</h1>
+                        <p class="card-text">
+                            <b>良链</b> 一个自由的资源链接分享社区
+                        </p>
+                        <p class="card-text">
+                            我们相信，时至今日互联网更需要的，不是再制造低质量信息，而是从纷乱错杂的数据中筛选、提炼精华的环节
+                        </p>
+                        <hr>
+                        <p>加入我们，一起分享真正有用的资源链接</p>
+                        <a class="btn btn-outline-success" href="/about" role="button">了解我们</a>
+                        <a class="btn btn-primary" href="/register" role="button">加入我们</a>
+                    </div>
+                </div>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <hr>
+            <div class="row">
+                <div class="col-lg-2 col-xl-2 hidden-sm">
+                    <div class="router-box">
+                        <div class="list-group">
+                            <a href="#guide" class="list-group-item list-group-item-action">精选</a>
+                            <a href="#last" class="list-group-item list-group-item-action">最近</a>
+                        </div>
+                    </div>
+                    <div class="router-box">
+                        <div><h5 class="sub">标签</h5></div>
+                        {% for tag in tags_list %}
+                        {% include '_tags_small.html' %}
+                        {% endfor %}
+                        <a class="badge badge-warning tag-item" href="{{ url_for('tags') }}">更多标签 ⎋</a>
+                    </div>
+                </div>
+                <!-- /.block left -->
+                <div class="col-lg-10 col-xl-10">
+                    <div>
+                        <h3 class="text-muted mb-2" id="guide">精选</h3>
+                        <div id="box-guide">
+                            <div class="card-columns">
+                                {% for question in questions_guide %}
+                                {% include '_question_list.html' %}
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <div class="mt-1 mb-3 text-center">
+                            <button class="btn btn-sm btn-outline-primary mb-1" onclick="load_posts(2, 'questions_guide_best', {{ APP_CONFIG['POSTS_PRE_PAGE_INDEX'] }}, '#box-guide', this)">加载更多</button>
+                            <!--<span class="mr-2">互联网生存指南</span>
+                            <a href="{{ url_for('guide') }}" class="btn btn-outline-success btn-sm">阅读</a>-->
+                        </div>
+                    </div>
+                    <hr>
+                    <div>
+                        <h3 class="text-muted mb-2" id="last">最近</h3>
+                        <div id="box-last">
+                            <div class="card-columns">
+                                {% for question in questions_last %}
+                                {% include '_question_list.html' %}
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <div class="mt-1 mb-3 text-center">
+                            <button class="btn btn-sm btn-outline-primary mb-1" onclick="load_posts(2, 'questions_last', {{ APP_CONFIG['POSTS_PRE_PAGE_INDEX'] }}, '#box-last', this)">加载更多</button>
+                            <!--<span class="mr-2">更多主题</span>
+                            <a href="{{ url_for('explore') }}" class="btn btn-outline-primary btn-sm">探索</a>-->
+                        </div>
+                    </div>
+                </div>
+                <!-- /.block right -->
+            </div>
+            {% endif %}
+{%  endblock %}
+{% block js %}
+    {% if anchor %}
+    <script>
+        $(document).ready(function(){
+            window.location.hash = "#{{ anchor }}";
+        });
+    </script>
+    {% endif %}
+    {% include '_js_load_posts.html' %}
+{% endblock %}

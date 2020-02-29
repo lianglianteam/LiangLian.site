@@ -1,0 +1,1 @@
+💡<a href="{{ url_for('view_user', id=sender.id, _external=True) }}">{{ sender.username }}</a>给主题<a href="{{ url_for('view_question', id=question.id, _external=True) }}">{{ question.title }}</a>添加了一个<a href="{{ url_for('view_question', id=answer.question.id, _anchor="answer-"+answer.id|string, _external=True)}}"><span>链接</span></a><br>

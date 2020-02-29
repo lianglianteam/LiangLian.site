@@ -1,0 +1,229 @@
+.voteNum{
+    float:right;
+    font-weight:bold;
+    font-size: 1.5rem;
+}
+.container{
+    margin-top: 3rem;
+}
+.author{
+    color: #28a745;
+}
+.author:hover{
+    color: green;
+}
+.link-item{
+    margin-top: 3rem;
+}
+.sm-item{
+    padding: 0.75rem;
+}
+.link-item-small{
+    margin: 0rem;
+}
+.link-desc{
+    padding: 0.5rem;
+}
+.download-link{
+    color: #007bff;
+}
+.description-text{
+    color: gray;
+}
+.float-right{
+    float: right;
+}
+.new-msg:after{
+    display: inline-block;
+    width: 0.6rem;
+    height: 0.6rem;
+    margin-left: 0.2rem;
+    background-color: #f1071eb0;
+    border-radius: 50%;
+    content: "";
+}
+.post{
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 1.7;
+    font-family: -apple-system,SF UI Text,Arial,PingFang SC,Hiragino Sans GB,Microsoft YaHei,WenQuanYi Micro Hei,sans-serif;
+}
+.my-nav{
+    box-shadow: 0px 2px 10px 0px rgba(0,0,0,0.1),0 1px rgba(0,0,0,0.1);
+    border-top: 3px solid rgba(0, 123, 255, 0.68);
+    padding-bottom: 1rem;
+    background-color: rgba(248, 249, 250, 0.97)!important;
+}
+.footer{
+    margin-bottom: 2rem;
+    text-align:center!important;
+}
+.my-when-nav-fixed-top{
+    padding-top: 3rem;
+}
+.my-active{
+    color: #007bff!important;
+    font-weight: 500;
+}
+.my-inline{
+    display: inline-block;
+}
+.my-small-expand{
+    margin-left: -1.5rem;
+    margin-right: -1.5rem;
+}
+.tag-item{
+    margin-bottom: 0.2rem;
+    margin-right: 0.2rem;
+    color: white!important;
+}
+.list-group-item:hover{
+    background-color: #007bff;
+    color: white;
+}
+.router-box{
+    margin-bottom: 1.5rem;
+}
+
+.can-not-select{
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+}
+/* Extra small devices (portrait phones, less than 576px)*/
+@media (max-width: 575px){
+    .media-body{
+        display: block!important;
+        vertical-align: -webkit-baseline-middle;
+        padding-right: 1rem;
+    }
+    .voteNum{
+        float:right;
+        font-weight:bold;
+        font-size: 1rem;
+        margin-top: 0.5rem;
+    }
+    .navbar-search{
+        margin-top: 0.5rem;
+    }
+    .navbar-user{
+        margin-top: 0.5rem;
+        margin-bottom: 0.5rem;
+    }
+    .user-sign{
+        text-align: left;
+    }
+    .my-nav-item-user{
+        margin-top: 0.5rem;
+    }
+    .my-nav-item-action{
+        margin-top: 0.5rem;
+    }
+    .hidden-sm{
+        display: none;
+    }
+}
+
+/* Small devices (landscape phones, 576px and up) */
+@media (min-width: 576px) and (max-width: 767px){
+    .media-body{
+        display: block!important;
+        vertical-align: -webkit-baseline-middle;
+        padding-right: 1rem;
+    }
+    .voteNum{
+        float:right;
+        font-weight:bold;
+        font-size: 1rem;
+        margin-top: 0.5rem;
+    }
+    .navbar-search{
+        margin-left: 2rem;
+    }
+    .user-sign{
+        text-align: left;
+    }
+        .my-nav-item-user{
+        margin-top: 0.5rem;
+    }
+    .my-nav-item-action{
+        margin-top: 0.5rem;
+    }
+    .hidden-sm{
+        display: none;
+    }
+}
+
+/* Medium devices (tablets, 768px and up) */
+@media (min-width: 768px) and (max-width: 991px) {
+    .media-body{
+        display: table-cell!important;
+        vertical-align: -webkit-baseline-middle;
+        padding-right: 1rem;
+    }
+    .voteNum{
+        float:right;
+        font-weight:bold;
+        font-size: 1.5rem;
+    }
+    .navbar-search{
+        margin-left: 2rem;
+    }
+    .user-sign{
+        text-align: right;
+    }
+    .my-nav-item-user{
+        margin-top: 0.5rem;
+    }
+    .my-nav-item-action{
+        margin-top: 0.5rem;
+    }
+}
+
+/* Large devices (desktops, 992px and up) */
+@media (min-width: 992px) and (max-width: 1199px)  {
+    .media-body{
+        display: table-cell!important;
+        vertical-align: -webkit-baseline-middle;
+        padding-right: 1rem;
+    }
+    .voteNum{
+        float:right;
+        font-weight:bold;
+        font-size: 1.5rem;
+    }
+    .navbar-search{
+        margin-left: 2rem;
+    }
+    .user-sign{
+        text-align: right;
+    }
+    .my-nav-item-user{
+        margin-right: 1rem;
+    }
+}
+
+/* Extra large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) {
+    .media-body{
+        display: table-cell!important;
+        vertical-align: -webkit-baseline-middle;
+        padding-right: 1rem;
+    }
+    .voteNum{
+        float:right;
+        font-weight:bold;
+        font-size: 1.5rem;
+    }
+    .navbar-search{
+        margin-left: 2rem;
+    }
+    .user-sign{
+        text-align: right;
+    }
+    .my-nav-item-user{
+        margin-right: 1rem;
+    }
+}

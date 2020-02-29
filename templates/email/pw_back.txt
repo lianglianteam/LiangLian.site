@@ -1,0 +1,5 @@
+{{ user.username }}，您好<br><br>
+    请在 1 小时内，访问下面的链接以重置密码
+    {{ url_for('pw_back_confirm', token=token, _external=True) }}
+
+来自 良链团队ʕ•̫͡•ʕ*̫͡*ʕ•͓͡•ʔ-̫͡-ʕ•̫͡•ʔ*̫͡*ʔ-̫͡-ʔ

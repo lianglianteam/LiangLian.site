@@ -1,0 +1,123 @@
+{% extends "base.html" %}
+{% block title %}分享：{{ question.title }}{% endblock %}
+{% block keywords %}资源,实用,{{ question.title }}{% endblock %}
+{% block description %}{{ question.desc }}{% endblock %}
+{% block container %}
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">{{ question.title }}</h4>
+                    <p class="card-text">{{ question.desc }}</p>
+                    {% if question.private %}
+                        {% if user %}
+                            {% if question.author == user %}
+                                <a href="{{ url_for('write_answer', question=question.id) }}" class="btn btn-outline-success">添加链接</a>
+                            {% else %}
+                                <svg height="32" class="mr-3" viewBox="0 0 12 16" version="1.1" width="24" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="私有主题，无法添加链接"><path fill-rule="evenodd" d="M4 13H3v-1h1v1zm8-6v7c0 .55-.45 1-1 1H1c-.55 0-1-.45-1-1V7c0-.55.45-1 1-1h1V4c0-2.2 1.8-4 4-4s4 1.8 4 4v2h1c.55 0 1 .45 1 1zM3.8 6h4.41V4c0-1.22-.98-2.2-2.2-2.2-1.22 0-2.2.98-2.2 2.2v2H3.8zM11 7H2v7h9V7zM4 8H3v1h1V8zm0 2H3v1h1v-1z"></path></svg>
+                            {% endif %}
+                        {% else %}
+                            <svg height="32" class="mr-3" viewBox="0 0 12 16" version="1.1" width="24" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="私有主题，无法添加链接"><path fill-rule="evenodd" d="M4 13H3v-1h1v1zm8-6v7c0 .55-.45 1-1 1H1c-.55 0-1-.45-1-1V7c0-.55.45-1 1-1h1V4c0-2.2 1.8-4 4-4s4 1.8 4 4v2h1c.55 0 1 .45 1 1zM3.8 6h4.41V4c0-1.22-.98-2.2-2.2-2.2-1.22 0-2.2.98-2.2 2.2v2H3.8zM11 7H2v7h9V7zM4 8H3v1h1V8zm0 2H3v1h1v-1z"></path></svg>
+                        {% endif %}
+                    {% else %}
+                        <a href="{{ url_for('write_answer', question=question.id) }}" class="btn btn-outline-success">添加链接</a>
+                    {% endif %}
+                    <span class="dropdown">
+                        <button type="button" class="btn btn-primary" data-toggle="dropdown" aria-expanded="false">o.o</button>
+                        <div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 29px, 0px); top: 0px; left: 0px; will-change: transform;">
+                            {% if user and (user.role.type == USER_CODE['root'] or user.role.type == USER_CODE['admin']) %}
+                                {% if question.is_belong_to_theme(APP_CONFIG['THEME_NAME_GUIDE']) %}
+                                    <a href="{{ url_for('motion_add_to_theme', name=APP_CONFIG['THEME_NAME_GUIDE'], id=question.id) }}" class="dropdown-item">加入到“指南”</a>
+                                {% else %}
+                                    <a href="{{ url_for('motion_del_to_theme', name=APP_CONFIG['THEME_NAME_GUIDE'], id=question.id) }}" class="dropdown-item">从“指南”中删除</a>
+                                {% endif %}
+                            {% endif %}
+                            {% if user %}{% if user.role.type == USER_CODE['root'] or user.role.type == USER_CODE['admin'] or question.author.id == user.id %}<a href="{{ url_for('motion_del_question', id=question.id) }}" class="dropdown-item">删除</a><div class="dropdown-divider"></div>{% endif %}{% endif %}
+                            <a class="dropdown-item" href="{{ url_for('report', theme="Question-"+question.id|string) }}">报告</a>
+                        </div>
+                    </span>
+                </div>
+                    <div class="card-footer">
+                        <span class="mr-auto  text-muted">{% if question.private %}私有主题{% else %}{{ moment(question.create_time).calendar() }}{% endif %}</span>
+                        <span class="ml-3">
+                            {% for tag in question.tags.limit(5).all() %}
+                                {% include '_tags_small.html' %}
+                            {% endfor %}
+                        </span>
+                        <span class="text-muted float-right">From <a class="author" href="{{ url_for('view_user', id=question.author.id) }}">{{ question.author.username }}</a></span>
+                    </div>
+            </div>
+            {% if question.answers.count()==0 %}
+                {% if question.private %}
+                <div class="alert alert-info mt-3" role="alert">点击上方的“添加链接”，来增加您的快速启动项</div>
+                {% else %}
+                <div class="alert alert-info mt-3" role="alert">欸，还没有分享，不如去<a href="https://www.baidu.com/s?wd={{ question.title }}" target="_blank">百度</a>转转</div>
+                {% endif %}
+            {% endif %}
+            {% for answer in answers.items %}
+                <div class="card link-item mb-3" id="answer-{{ answer.id }}">
+                    <div class="card-body" id="answer-body-{{ answer.id }}">
+                        {% if answer.link_type != 'link' %}
+                        <span class="card-title"><span class="badge badge-primary mr-2 can-not-select">{{ answer.link_type }}</span><span class="download-link" data-toggle="tooltip" data-placement="top" data-html = "true" title="无法保证站外链接安全性">{{ answer.link_title }}</span></span>
+                        {% else %}
+                        <button class="btn btn-outline-primary btn-sm" onclick="show_preview('{{ answer.id }}','{{ answer.link }}')" id="preview-button-{{ answer.id }}" data-toggle="tooltip" data-placement="top" title="部分网站可能无法预览"><span>预览</span></button>
+                        <span class="card-title"><a href="{{ url_for('motion_jump', url=answer.link) }}" target="_blank" data-toggle="tooltip" data-placement="top" data-html = "true" title="{{ answer.link }}<br>无法保证站外链接安全性" rel="noopener norefferrer">{{ answer.link_title | truncate(50, True)}}</a></span>
+                        {% endif %}
+                        <p class="card-text mt-3 link-desc">{{ answer.desc }}</p>
+                        <hr class="my-1">
+                        {% if not question.private %}
+                        <ul class="list-unstyled">
+                        {% for comment in answer.comments %}
+                            <li class="media" id="comment-{{ comment.id }}">
+                                <div class="media-body" style="text-align:left;">
+                                    <a class="mt-0 mb-1 author" href="{{ url_for('view_user', id=comment.author.id) }}">{{ comment.author.username }}</a>：
+                                    <span>{{ comment.content }}</span>
+                                    <small>{% if user %}{% if user.role.type == USER_CODE['root'] or user.role.type == USER_CODE['admin'] or comment.author.id == user.id %}<a href="{{ url_for('motion_del_comment', id=comment.id) }}" class="float-right ml-2">删除</a>{% endif %}{% endif %}</small>
+                                    <small style="float: right" class="description-text">{{ moment(comment.create_time).fromNow() }}</small>
+                                </div>
+                            </li>
+                        {% endfor %}
+                        </ul>
+                        <form method="post" action="#answer-{{ answer.id }}">
+                            <input type="number" hidden readonly="readonly" name="answer_id" value="{{ answer.id }}">
+                            <div class="input-group mt-3">
+                                <input type="text" class="form-control" name="comment" placeholder="这个链接怎么样？" required>
+                                <div class="input-group-append">
+                                    <button type="submit" class="btn btn-outline-secondary" aria-describedby="submit">评论</button>
+                                </div>
+                            </div>
+                        </form>
+                        {% endif %}
+                    </div>
+                    <div class="card-footer">
+                        <span>
+                            {% if question.private %}
+                                {% if user and user.id == answer.author.id %}
+                                <a class="btn btn-success" href="{{ url_for('motion_vote_up', id=answer.id) }}">上移</a>
+                                <a class="btn btn-warning" href="{{ url_for('motion_vote_down', id=answer.id) }}">下移</a>
+                                {% endif %}
+                            {% else %}
+                                <button id="btn-vote-answer-{{ answer.id }}" class="btn bg-success text-light mr-1" onclick="vote({{ answer.id }}, 'up')" data-toggle="tooltip" data-placement="top" title="{% if user and answer.hav_vote(user) %}已评价{% else %}有用并且可以帮助更多人{% endif %}">♥︎ {{ answer.vote }}</>
+                                <button id="btn-vote-answer-{{ answer.id }}-down" class="btn btn-warning mr-2" onclick="vote({{ answer.id }}, 'down')" data-toggle="tooltip" data-placement="top" title="{% if user and answer.hav_vote(user) %}已评价{% else %}没有用并且不能帮助其他人{% endif %}">踩</button>
+                            {% endif %}
+                            <span class="dropdown">
+                                <button type="button" class="btn btn-outline-info" data-toggle="dropdown" aria-expanded="false">>_<</button>
+                                <div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 29px, 0px); top: 0px; left: 0px; will-change: transform;">
+                                {% if user and user_launcher %}<a class="dropdown-item" href="{{ url_for('write_answer', question=user_launcher.id, link=answer.link) }}">加入到“快速启动”</a>{% endif %}
+                                {% if user %}{% if answer.author.role.type == USER_CODE['root'] or answer.author.role.type == USER_CODE['admin'] or answer.author.id == user.id %}<a href="{{ url_for('motion_del_answer', id=answer.id) }}" class="dropdown-item">删除</a><div class="dropdown-divider"></div>{% endif %}{% endif %}
+                                <a class="dropdown-item" href="{{ url_for('report', theme="Answer-"+answer.id|string) }}">报告</a>
+                                </div>
+                            </span>
+                        </span>
+                        <span style="float:right;" class="pt-2"><span class="text-muted">From </span><a class="author" href="{{ url_for('view_user', id=answer.author.id) }}">{{ answer.author.username }}</a></span>
+                    </div>
+                </div>
+            {% endfor %}
+            <ul class="pagination list-unstyled">
+                {% if answers.has_prev %}<li class="page-item mr-auto"><a class="page-link" href="{{ url_for('view_question', page=answers.prev_num, id=question.id) }}">&larr;上一页</a></li>{% endif %}
+                {% if answers.has_next %}<li class="page-item ml-auto"><a class="page-link" href="{{ url_for('view_question', page=answers.next_num, id=question.id) }}">&rarr;下一页</a></li>{% endif %}
+            </ul>
+{%  endblock %}
+{% block js %}
+    {% include '_js_vote.html' %}
+    {{ moment.include_moment(local_js='https://cdn.staticfile.org/moment.js/2.24.0/moment-with-locales.min.js') }}
+    {{ moment.lang("zh-CN") }}
+{% endblock %}

@@ -1,0 +1,6 @@
+{% extends 'email/base_email.html' %}
+{% block body %}
+    <h2>💡您关注的主题<b>{{ answer.question.title }}</b>有了新链接</h2>
+    <hr style="margin-top: 1rem;margin-bottom: 1rem;">
+    <a href="{{ url_for('view_user', id=sender.id, _external=True) }}">{{ sender.username }}</a>向主题<a href="{{ url_for('view_question', id=answer.question.id, _external=True) }}">{{ answer.question.title }}</a>添加了一个<a href="{{ url_for('view_question', id=answer.question.id, _anchor="answer-"+answer.id|string, _external=True)}}"><span>新链接:{{ answer.link_title }}</span></a><br>
+{% endblock %}

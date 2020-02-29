@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}互联网生存指南{% endblock %}
+{% block nav_guide %}my-active{% endblock %}
+{% block keywords %}导航,实用网站,互联网生存指南,实用{% endblock %}
+{% block description %}互联网生存指南，茫茫互联网，你可能会需要这些实用的网站{% endblock %}
+{% block container %}
+            <h1>互联网生存指南</h1>
+            <hr class="my-4">
+            <p class="mb-3 text-muted">茫茫互联网，你可能会需要这些实用的网站</p>
+            <div class="card-columns">
+                {% for question in questions.items %}
+                {% include '_question_list.html' %}
+                {% endfor %}
+            </div>
+            <ul class="pagination list-unstyled">
+                {% if questions.has_prev %}<li class="page-item mr-auto"><a class="page-link" href="{{ url_for('explore', page=questions.prev_num) }}">&larr;上一页</a></li>{% endif %}
+                {% if questions.has_next %}<li class="page-item ml-auto"><a class="page-link" href="{{ url_for('explore', page=questions.next_num) }}">&rarr;下一页</a></li>{% endif %}
+            </ul>
+{%  endblock %}

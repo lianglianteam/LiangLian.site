@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title %}报告{% endblock %}
+{% block container %}
+    <h1>报告</h1>
+    <hr class="my-4">
+    <form method="post">
+        <label for="theme">向管理员报告诸如侵权、用户反馈、链接有毒等情况</label>
+        <input type="text" class="form-control mb-3" id="theme" name="theme" placeholder="报告主题" {% if disable %}readonly="readonly"{% endif %} {% if theme %}value="{{ theme }}" {% endif %} required>
+        <input type="text" class="form-control mb-3" id="report" name="report" placeholder="准确描述" {% if report %}value="{{ report }}" {% endif %} required>
+        <button type="submit" class="btn btn-primary mb-3" aria-describedby="submit">提交</button>
+    </form>
+{%  endblock %}

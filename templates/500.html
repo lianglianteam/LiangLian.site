@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title %}500 - Server Error{% endblock %}
+{% block container %}
+    <h1>500 <small>- Server Error 服务器内部错误</small></h1>
+    <hr class="my-4">
+    <p>……服务器姬已经用小本本记下来了</p>
+    {% if uer %}
+    {% if user.role.type == USER_CODE['root'] %}
+    <small>{{ error }}</small>
+    {% endif %}
+    {% endif %}
+{%  endblock %}

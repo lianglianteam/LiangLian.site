@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% block title %}关于{% endblock %}
+{% block nav_about %}my-active{% endblock %}
+{% block keywords %}关于,关于我们,怎样{% endblock %}
+{% block description %}关于良链，一个完全由用户产生、评价内容的链接资源分享社区的诞生{% endblock %}
+{% block container %}
+    <h2 xmlns="http://www.w3.org/1999/html">关于良链</h2>
+    <hr class="my-4">
+    <div>
+        <div class="m-3">
+            <h4 id="why">初衷</h4>
+            <p class="post">
+                &#8203已记不清多少次为了搜索到某一问题的答案，费劲艰辛，翻过多少垃圾重复信息，浪费多少时间才能找到想要的东西。<br>
+            </p>
+            <p class="post">
+                慢慢的，我开始有想要做一个完全由用户产生、评价内容的链接资源分享社区的冲动。<br>
+                在那里，每一个链接、每一条内容都是由有血有肉的用户所参与创造的。
+                没有自作聪明的人工智障，没有商业内幕与道德危机。<br>
+                于是，在2019年春节，<a href="{{ url_for('index', _external=True) }}"><b>良链</b></a>诞生了。
+            </p>
+            <p class="post">
+                每一个主题下收获最多♥ 的链接自然就是最优的，并且每一个链接都会有来自评论区的监督与备注<br>
+                希望这个社区能够节省你的时间，也希望你在受益的同时，贡献自己的力量。<br>
+                <small class="float-right">2019 冬</small>
+            </p>
+        </div>
+    </div>
+    <hr class="my-4">
+    <h2 id="guide">社区食用指南</h2>
+    <div class="post">
+        <ul>
+            <li>主题的创建有两种途径，直接「分享」或者通过「提问」，每一主题都要有明确的标题与简介</li>
+            <li>在创建主题或问题时，选择合适的标签会让主题或问题更好地帮助他人</li>
+            <li>同样，你可以通过关注标签迅速找到组织</li>
+            <li>欢迎评论区的监督与备注，指出链接的邪恶行为，提示链接是否已失效</li>
+            <li>分享可以是具体的资源，也可以是一些实用有趣的网站</li>
+            <li>我们不欢迎内容虚假、伪劣、恶意、反动的链接，多次被举报发现，账号将会被封禁</li>
+            <li>想要自定义头像？去<a href="https://cn.gravatar.com" target="_blank">Gravatar</a>设置吧</li>
+            <li>喜欢良链？有任何建议或想法？向管理员<a href="{{ url_for('report') }}">反馈</a></li>
+            <li>另外，导航栏上的搜索君已随时待命</li>
+        </ul>
+    </div>
+
+    <hr class="my-4">
+    <h2 id="call">联系我们</h2>
+    <div class="m-3">
+        <div>
+            <span>您如果有任何问题或好的建议，欢迎联系我们</span><a class="btn btn-sm btn-outline-danger ml-3" href="{{ url_for('report') }}">站内反馈</a>
+        </div>
+        <div>
+            <span>或者直接通过邮箱联系</span><img alt="Santiegomail#foxmail" src="{{ url_for('static', filename='source/email.png') }}">
+        </div>
+    </div>
+
+    <hr class="my-4">
+    <h2 id="code">关于开发</h2>
+    <p class="ml-3">
+        <span class="text-info">Make with <span class="text-primary">♥</span></span><br>前端：Bootstrap4 + jQuery，后端：Python Flask。<br>
+        有兴趣一起完善本站？或者交流学习，<a href="https://github.com/lianglianteam" target="_blank">GitHub Organization - LiangLian Team</a>
+    </p>
+
+    <hr class="my-4">
+    <h2 id="call">免责声明</h2>
+    <div class="m-3">
+        <p class="post">
+        <ul>
+            <li>用户直接或通过各类方式（如站外API引用等）间接使用本站服务和数据的行为，都将被视作已无条件接受本声明所涉全部内容；若用户对本声明的任何条款有异议，请停止使用本站所提供的全部服务。</li>
+            <li>本站仅为用户发布的内容提供存储空间，本站不对用户发表、转载的内容提供任何形式的保证：不保证内容满足您的要求，不保证本站的服务不会中断。因网络状况、通讯线路、第三方网站或管理部门的要求等任何原因而导致您不能正常使用本站，本站不承担任何法律责任。</li>
+            <li>用户在本站发表的内容仅表明其个人的立场和观点，并不代表本站的立场或观点。作为内容的发表者，需自行对所发表内容负责，因所发表内容引发的一切纠纷，由该内容的发表者承担全部法律及连带责任。本站不承担任何法律及连带责任。</li>
+            <li>如您认为本站页面信息侵犯了您的权益，请附上版权证明邮件告知，在收到邮件后我们将尽快处理。<br></li>
+        </ul>
+            <br>
+            <br>
+        </p>
+    </div>
+{%  endblock %}

@@ -1,0 +1,7 @@
+{% extends 'email/base_email.html' %}
+{% block body %}
+    <h2>您在主题<a href="{{ url_for('view_question', id=answer.question.id, _external=True) }}">{{ answer.question.title }}</a>下分享的链接被回复了</h2>
+    <hr style="margin-top: 1rem;margin-bottom: 1rem;">
+    <a href="{{ url_for('view_user', id=sender.id, _external=True) }}">{{ sender.username }}</a>回复了您在<a href="{{ url_for('view_question', id=answer.question.id, _external=True) }}">主题{{ answer.question.title }}</a>下分享的<a href="{{ url_for('view_question', id=answer.question.id, _anchor="answer-"+answer.id|string, _external=True)}}"><span>链接:{{ answer.link_title }}</span></a><br>
+    <p style="padding: 0.5rem;background: #f5f5f5;margin-top: 1rem;">{{ text }}</p>
+{% endblock %}

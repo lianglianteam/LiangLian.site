@@ -1,0 +1,10 @@
+{% extends 'email/base_email.html' %}
+{% block body %}
+        <h2>重置您的密码</h2>
+        <hr style="margin-top: 1rem;margin-bottom: 1rem;">
+		<p>
+			<b>{{ user.username }}</b>，您好<br><br>
+			请在 1 小时内，访问下面的链接以重置密码
+		</p>
+		<a href="{{ url_for('pw_back_confirm', token=token, _external=True) }}" target="_blank" rel="noopener norefferrer">{{ url_for('pw_back_confirm', token=token, _external=True) }}</a>
+{% endblock %}
