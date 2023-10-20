@@ -1,3 +1,5 @@
+![](https://img1.imgtp.com/2023/10/20/8asYtXHU.png)
+
 # LiangLian.site
 
 目前网站已关闭 *R.I.P*
